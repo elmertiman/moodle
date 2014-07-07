@@ -41,8 +41,9 @@ class block_mentees extends block_base {
     }
 
     function get_content() {
-        global $CFG, $USER, $DB;
-
+        global $CFG, $USER, $DB, $COURSE; 
+        // We need to add global variable $COURSE Object above
+        // So system can pick-up the active course
         if ($this->content !== NULL) {
             return $this->content;
         }
@@ -60,7 +61,8 @@ class block_mentees extends block_base {
 
             $this->content->text = '<ul>';
             foreach ($usercontexts as $usercontext) {
-                $this->content->text .= '<li><a href="'.$CFG->wwwroot.'/user/view.php?id='.$usercontext->instanceid.'&amp;course='.SITEID.'">'.fullname($usercontext).'</a></li>';
+             // Now replace SITEID (from orginal code) with the $COURSE->id to fetch the active course of the selected student 
+                $this->content->text .= '<li><a href="'.$CFG->wwwroot.'/user/view.php?id='.$usercontext->instanceid.'&amp;course='.$COURSE->id.'">'.fullname($usercontext).'</a></li>';
             }
             $this->content->text .= '</ul>';
         }
